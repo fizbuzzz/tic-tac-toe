@@ -25,6 +25,7 @@ const playerZero = {
 const playerCross = {
     counterOfWins: 0,
     counterOfTurns: 0,
+
 }
 
 
@@ -55,7 +56,7 @@ function mainStructure (ct,t) {
             transformedArr = itemStep(arrayOfCrossDatas,t,playerCross, 'Ход ноликов')
 
         
-        if({counterOfTurns} = playerCross >=3) {
+        if(playerCross?.counterOfTurns >=3) {
             const newArr = winCombinations.map(i => transformedArr.filter(elem => i.includes(elem)))
             newArr.forEach(i => {
                 if (i.length === 3) {
@@ -71,7 +72,7 @@ function mainStructure (ct,t) {
         let blockName = targetInit('ноликов',t,'O'),
             transformedArr = itemStep(arrayOfZeroDatas,t, playerZero,'Ход крестиков');
 
-        if({counterOfTurns} = playerZero >=3) {
+        if(playerZero?.counterOfTurns >=3) {
             const newArr = winCombinations.map(i => transformedArr.filter(elem => i.includes(elem)))
             newArr.forEach(i => {
                 if (i.length === 3) {
@@ -135,7 +136,7 @@ function endOfTheRound (blockName, increaseObjectWins) {
 
 function startRound (turn, currentTarget) {
     setTimeout(() => {
-        turnText.innerHTML = `${turn} <br/> X ${{counterOfWins} = playerCross} : ${{counterOfWins} = playerZero} O`
+        turnText.innerHTML = `${turn} <br/> X ${playerCross?.counterOfWins} : ${playerZero?.counterOfWins} O`
         currentTarget.style.pointerEvents = 'all'
         document.querySelectorAll('.game__block').forEach(i => {
             i.innerHTML = '';
@@ -151,7 +152,7 @@ function draw (currentTarget)  {
     arrayOfCrossDatas = []
     arrayOfZeroDatas = []
     setTimeout(() => {
-        turnText.innerHTML = `Ход ноликов <br/> X ${{counterOfWins} = playerCross} : ${{counterOfWins} = playerZero} O`
+        turnText.innerHTML = `Ход ноликов <br/> X ${playerCross?.counterOfWins} : ${playerZero?.counterOfWins} O`
         currentTarget.style.pointerEvents = 'all'
         document.querySelectorAll('.game__block').forEach(i => {
             i.innerHTML = '';
