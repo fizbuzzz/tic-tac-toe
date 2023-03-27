@@ -41,22 +41,22 @@ setTimeout(() => {
 
 
 
-(function(){
+(function () {
     document.querySelector('.game__wrapper').addEventListener('click', (e) => {
-        const {target,currentTarget} = e;
+        const { target, currentTarget } = e;
         if (target.classList[0] === 'game__block') {
-            mainStructure(currentTarget,target)
-        } 
+            mainStructure(currentTarget, target)
+        }
     })
 })()
 
-function mainStructure (ct,t) {
+function mainStructure(ct, t) {
     if (turnText.textContent === 'Ход крестиков') {
-        let blockName = targetInit('крестиков',t,'X'),
-            transformedArr = itemStep(arrayOfCrossDatas,t,playerCross, 'Ход ноликов')
+        let blockName = targetInit('крестиков', t, 'X'),
+            transformedArr = itemStep(arrayOfCrossDatas, t, playerCross, 'Ход ноликов')
 
-        
-        if(playerCross?.counterOfTurns >=3) {
+
+        if (playerCross?.counterOfTurns >= 3) {
             const newArr = winCombinations.map(i => transformedArr.filter(elem => i.includes(elem)))
             newArr.forEach(i => {
                 if (i.length === 3) {
@@ -67,12 +67,13 @@ function mainStructure (ct,t) {
                 }
             })
         }
-        
-    } else {
-        let blockName = targetInit('ноликов',t,'O'),
-            transformedArr = itemStep(arrayOfZeroDatas,t, playerZero,'Ход крестиков');
 
-        if(playerZero?.counterOfTurns >=3) {
+    } else {
+
+        let blockName = targetInit('ноликов', t, 'O'),
+            transformedArr = itemStep(arrayOfZeroDatas, t, playerZero, 'Ход крестиков');
+
+        if (playerZero?.counterOfTurns >= 3) {
             const newArr = winCombinations.map(i => transformedArr.filter(elem => i.includes(elem)))
             newArr.forEach(i => {
                 if (i.length === 3) {
@@ -83,7 +84,7 @@ function mainStructure (ct,t) {
                 }
             })
         }
-        
+
     }
 }
 
@@ -92,18 +93,19 @@ function randomIntFromInterval(min, max) {
     const num = Math.floor(Math.random() * (max - min + 1) + min)
     return num
 }
-            
+
 
 
 function setTurn() {
     return randomIntFromInterval(0, 1) ? 'Ход крестиков' : 'Ход ноликов'
 }
 
-function targetInit (currentName, targetElem,char)  {
+function targetInit(currentName, targetElem, char) {
     targetElem.innerHTML = char
-        document.querySelectorAll('.game__block').forEach(i => {
-            targetElem.innerHTML == 'X' ? targetElem.style.color = '#FF1744' : targetElem.style.color = '#2979FF'
-        })
+    document.querySelector('.result').innerHTML = ''
+    document.querySelectorAll('.game__block').forEach(i => {
+        targetElem.innerHTML == 'X' ? targetElem.style.color = '#FF1744' : targetElem.style.color = '#2979FF'
+    })
     targetElem.style.pointerEvents = 'none'
     moveCounter++
     return currentName;
@@ -111,17 +113,17 @@ function targetInit (currentName, targetElem,char)  {
 
 
 
-function itemStep  (arr,targetElem, increaseObjectTurns, turn)  {
+function itemStep(arr, targetElem, increaseObjectTurns, turn) {
     arr.push(targetElem.getAttribute("data-item"))
     let transformedArr = arr
-    .sort((a,b) => a-b)
-    .map(i => +i)
+        .sort((a, b) => a - b)
+        .map(i => +i)
     turnText.innerHTML = turn
     increaseObjectTurns.counterOfTurns++;
     return transformedArr
-}    
+}
 
-function endOfTheRound (blockName, increaseObjectWins) {
+function endOfTheRound(blockName, increaseObjectWins) {
     turnText.innerHTML = `Игра завершена победой ${blockName}`
     document.querySelectorAll('.game__block').forEach(i => {
         i.style.pointerEvents = 'none'
@@ -134,30 +136,23 @@ function endOfTheRound (blockName, increaseObjectWins) {
 
 
 
-function startRound (turn, currentTarget) {
+function startRound(turn, currentTarget) {
     setTimeout(() => {
-        turnText.innerHTML = `${turn} <br/> X ${playerCross?.counterOfWins} : ${playerZero?.counterOfWins} O`
+        turnText.innerHTML = `${turn}`
+        document.querySelector('.result').innerHTML = `X ${playerCross?.counterOfWins}:${playerZero?.counterOfWins} O`
         currentTarget.style.pointerEvents = 'all'
         document.querySelectorAll('.game__block').forEach(i => {
             i.innerHTML = '';
             i.style.pointerEvents = 'all'
         })
-        
+
     }, 2000);
 }
 
-function draw (currentTarget)  {
+function draw(currentTarget) {
     turnText.innerHTML = 'Игра завершена ничьей !'
     moveCounter = 0;
     arrayOfCrossDatas = []
     arrayOfZeroDatas = []
-    setTimeout(() => {
-        turnText.innerHTML = `Ход ноликов <br/> X ${playerCross?.counterOfWins} : ${playerZero?.counterOfWins} O`
-        currentTarget.style.pointerEvents = 'all'
-        document.querySelectorAll('.game__block').forEach(i => {
-            i.innerHTML = '';
-            i.style.pointerEvents = 'all'
-        })
-        
-    }, 2000);
+    startRound(setTurn(), currentTarget)
 }
