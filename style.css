@@ -58,3 +58,15 @@ body {
     top: 15%;
     font-size: 45px;
 }
+
+@media screen and (max-width: 390px) {
+    .game__wrapper {
+        height: 310px;
+        width: 300px;
+    }
+
+    .game__block {
+        height: 70px;
+        width: 70px;
+    }
+}
